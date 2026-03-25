@@ -2,59 +2,79 @@ import './MainPage.css';
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { SearchInput } from '../components/SearchInput/SearchInput';
-import { ViewToggle, type ViewMode } from '../components/ViewToggle/ViewToggle';
-import { CategoryFilter } from '../components/CategoryFilter/CategoryFilter';
+import { SearchInput } from '../../components/SearchInput/SearchInput';
+import {
+  ViewToggle,
+  type ViewMode,
+} from '../../components/ViewToggle/ViewToggle';
+import { CategoryFilter } from '../../components/CategoryFilter/CategoryFilter';
 import {
   SortSelect,
   type SortValue,
-} from '../components/SortSelect/SortSelect';
-import { RevisionSwitch } from '../components/RevisionSwitch/RevisionSwitch';
-import { ItemsGrid } from '../components/ItemsListTypes/ItemsGrid/ItemsGrid';
-import { ItemsList } from '../components/ItemsListTypes/ItemsList/ItemsList';
-import { Pagination } from '../components/Pagination/Pagination';
-import { useDebounce } from '../hooks/useDebounce';
-import { fetchItems, type Category } from '../api/items';
-import { Spinner } from '../components/Spinner/Spinner';
+} from '../../components/SortSelect/SortSelect';
+import { RevisionSwitch } from '../../components/RevisionSwitch/RevisionSwitch';
+import { ItemsGrid } from '../../components/ItemsListTypes/ItemsGrid/ItemsGrid';
+import { ItemsList } from '../../components/ItemsListTypes/ItemsList/ItemsList';
+import { Pagination } from '../../components/Pagination/Pagination';
+import { useDebounce } from '../../hooks/useDebounce';
+import { fetchItems, type Category } from '../../api/items';
+import { Spinner } from '../../components/Spinner/Spinner';
 
 const ITEMS_PER_PAGE_MAP = {
   grid: 10,
   list: 4,
 } as const;
 
-const mapSortToQuery = (sort: SortValue) => {
+type SortQuery = {
+  sortColumn: 'createdAt' | 'title' | 'price';
+  sortDirection: 'asc' | 'desc';
+};
+
+const mapSortToQuery = (sort: SortValue): SortQuery => {
   switch (sort) {
     case 'createdAt_desc':
       return {
-        sortColumn: 'createdAt' as const,
-        sortDirection: 'desc' as const,
+        sortColumn: 'createdAt',
+        sortDirection: 'desc',
       };
 
     case 'createdAt_asc':
       return {
-        sortColumn: 'createdAt' as const,
-        sortDirection: 'asc' as const,
+        sortColumn: 'createdAt',
+        sortDirection: 'asc',
       };
 
     case 'title_asc':
       return {
-        sortColumn: 'title' as const,
-        sortDirection: 'asc' as const,
+        sortColumn: 'title',
+        sortDirection: 'asc',
       };
 
     case 'title_desc':
       return {
-        sortColumn: 'title' as const,
-        sortDirection: 'desc' as const,
+        sortColumn: 'title',
+        sortDirection: 'desc',
       };
+
+    case 'price_asc':
+      return {
+        sortColumn: 'price',
+        sortDirection: 'asc',
+      };
+
+    case 'price_desc':
+      return {
+        sortColumn: 'price',
+        sortDirection: 'desc',
+      };
+
     default:
       return {
-        sortColumn: 'createdAt' as const,
-        sortDirection: 'desc' as const,
+        sortColumn: 'createdAt',
+        sortDirection: 'desc',
       };
   }
 };
-
 export const MainPage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();

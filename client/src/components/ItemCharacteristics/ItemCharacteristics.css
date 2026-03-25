@@ -1,0 +1,31 @@
+.item-characteristics {
+  flex-direction: column;
+  gap: 19px;
+}
+
+.item-characteristics__title {
+  color: var(--text-color);
+  font-size: 22px;
+  line-height: 28px;
+}
+
+.item-characteristics__list {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item-characteristics__item {
+  display: grid;
+  grid-template-columns: 145px 1fr;
+  gap: 16px;
+}
+
+.item-characteristics__label {
+  color: var(--price-color);
+  font-size: 18px;
+}
+
+.item-characteristics__value {
+  color: var(--text-color);
+  font-size: 16px;
+}

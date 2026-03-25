@@ -5,7 +5,9 @@ export type SortValue =
   | 'createdAt_desc'
   | 'createdAt_asc'
   | 'title_asc'
-  | 'title_desc';
+  | 'title_desc'
+  | 'price_asc'
+  | 'price_desc';
 
 export interface SortSelectProps {
   value: SortValue;
@@ -17,6 +19,8 @@ const SORT_OPTIONS: { value: SortValue; label: string }[] = [
   { value: 'createdAt_asc', label: 'По новизне (сначала старые)' },
   { value: 'title_asc', label: 'По названию (А-Я)' },
   { value: 'title_desc', label: 'По названию (Я-А)' },
+  { value: 'price_asc', label: 'Сначала дешёвые' },
+  { value: 'price_desc', label: 'Сначала дорогие' },
 ];
 
 export const SortSelect = ({ value, onChange }: SortSelectProps) => {

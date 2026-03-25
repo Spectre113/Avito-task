@@ -25,7 +25,7 @@ export const ItemsQuerySchema = z.object({
   skip: z.number().int().nonnegative().optional(),
   needsRevision: z.boolean().optional(),
   categories: z.array(CategorySchema).optional(),
-  sortColumn: z.enum(['title', 'createdAt']).optional(),
+  sortColumn: z.enum(['title', 'createdAt', 'price']).optional(),
   sortDirection: z.enum(['asc', 'desc']).optional(),
 });
 
