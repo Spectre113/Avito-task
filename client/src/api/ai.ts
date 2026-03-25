@@ -23,7 +23,7 @@ export async function generateWithOllama({
     headers: { 'Content-Type': 'application/json' },
     signal,
     body: JSON.stringify({
-      model: 'llama3',
+      model: 'llama3.1:8b',
       prompt,
       stream: false,
     }),
@@ -40,4 +40,3 @@ export async function generateWithOllama({
 
   return { text: (data.response ?? '').trim() };
 }
-

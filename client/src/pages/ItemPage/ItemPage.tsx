@@ -1,14 +1,12 @@
 import './ItemPage.css';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-
 import { fetchItemById } from '../../api/items';
 import { Spinner } from '../../components/Spinner/Spinner';
 import { ItemHeader } from '../../components/ItemHeader/ItemHeader';
 import { ItemRevisionNotice } from '../../components/ItemRevisionNotice/ItemRevisionNotice';
 import { ItemCharacteristics } from '../../components/ItemCharacteristics/ItemCharacteristics';
 import { ItemDescription } from '../../components/ItemDescription/ItemDescription';
-
 import { getMissingFields } from './getMissingFields';
 import { getCharacteristics } from './getCharacteristics';
 import { ItemGallery } from '../../components/ItemGallery/ItemGallery';
