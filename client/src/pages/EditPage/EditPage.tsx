@@ -16,6 +16,7 @@ export const EditPage = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['item', id],
@@ -38,8 +39,54 @@ export const EditPage = () => {
   }, [data]);
 
   const handleCancel = () => {
-    if (!id) return;
+    if (!id) {
+      return;
+    }
+
     navigate(`/ads/${id}`);
+  };
+
+  const onSubmit = async (values: ItemUpdateInput) => {
+    if (!id) {
+      return;
+    }
+
+    try {
+      setSubmitError(null);
+      setSubmitSuccess(null);
+      setIsSubmitting(true);
+
+      const updatedItem = await updateItem(id, values);
+
+      if (!updatedItem.success) {
+        throw new Error('Update failed');
+      }
+
+      await queryClient.invalidateQueries({
+        queryKey: ['item', id],
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: ['items'],
+      });
+
+      setSubmitSuccess('Изменения успешно сохранены');
+
+      window.setTimeout(() => {
+        navigate(`/ads/${id}`);
+      }, 1500);
+    } catch (error) {
+      setSubmitSuccess(null);
+
+      if (error instanceof ZodError) {
+        setSubmitError('Форма заполнена некорректно');
+        return;
+      }
+
+      setSubmitError('Не удалось сохранить изменения');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isLoading) {
@@ -54,34 +101,6 @@ export const EditPage = () => {
     return <span>Ошибка загрузки данных</span>;
   }
 
-  const onSubmit = async (values: ItemUpdateInput) => {
-    try {
-      setSubmitError(null);
-      setIsSubmitting(true);
-
-      const updatedItem = await updateItem(id, values);
-
-      await queryClient.invalidateQueries({
-        queryKey: ['item', id],
-      });
-
-      await queryClient.invalidateQueries({
-        queryKey: ['items'],
-      });
-
-      navigate(`/ads/${id}`);
-    } catch (error) {
-      if (error instanceof ZodError) {
-        setSubmitError('Форма заполнена некорректно');
-        return;
-      }
-
-      setSubmitError('Не удалось сохранить изменения');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <main className="edit-page">
       <div className="container">
@@ -90,6 +109,9 @@ export const EditPage = () => {
         </header>
 
         {submitError && <div className="edit-page__error">{submitError}</div>}
+        {submitSuccess && (
+          <div className="edit-page__success">{submitSuccess}</div>
+        )}
 
         <section className="edit-page__content">
           <EditForm
