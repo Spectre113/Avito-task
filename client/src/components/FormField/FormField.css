@@ -1,0 +1,113 @@
+.form-field {
+  width: 100%;
+  margin-bottom: 13px;
+}
+
+.form-field:nth-last-child(2) {
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-stroke);
+}
+
+.form-field__control {
+  position: relative;
+  width: 43.8%;
+  display: flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 2px 12px;
+  border: 1px solid var(--border-stroke);
+  border-radius: 10px;
+  background-color: var(--section-background);
+}
+
+.form-field__control[data-name='Категория'] {
+  width: 24.66%;
+  margin-bottom: 18px;
+}
+
+.form-field[data-name='Название'] {
+  margin-bottom: 19px;
+  padding: 18px 0;
+  border-top: 1px solid var(--border-stroke);
+  border-bottom: 1px solid var(--border-stroke);
+}
+
+.form-field[data-name='Цена'] {
+  margin-bottom: 14px;
+  padding: 0 0 18px 0;
+  border-bottom: 1px solid var(--border-stroke);
+}
+
+.form-field__control[data-name='Описание'] {
+  width: 90.5%;
+}
+
+.form-field__control[data-name='Описание'] > .form-field__clear {
+  display: none;
+}
+
+.form-field[data-required='true'] {
+  padding-left: 1px;
+}
+
+.form-field[data-required='true'] > .form-field__label {
+  letter-spacing: -0.6px;
+}
+
+.form-field__label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 17.5px;
+  color: var(--text-color);
+}
+
+.form-field__label-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-field__actions {
+  flex: 0 0 auto;
+  margin-bottom: 8px;
+}
+
+.form-field__required {
+  margin-right: 9px;
+  color: var(--error);
+}
+
+.form-field__control--error {
+  border-color: var(--error);
+}
+
+.form-field__clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.form-field__error {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--error);
+}
+
+.form-field__label[data-characteristic='true'] {
+  margin-bottom: 11px;
+  font-size: 15px;
+}
+
+.form-field__control--warning {
+  border-color: var(--warning);
+}

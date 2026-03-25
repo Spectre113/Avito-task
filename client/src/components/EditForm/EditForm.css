@@ -1,0 +1,41 @@
+.edit-form {
+  width: 100%;
+  flex-direction: column;
+}
+
+.form__title {
+  color: var(--text-color);
+  font-size: 17.3px;
+  line-height: 28px;
+  margin-bottom: 8px;
+}
+
+.edit-form__grid {
+  gap: 20px;
+}
+
+.edit-form__description {
+  grid-column: 1 / -1;
+}
+
+.edit-form__actions {
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.edit-form__button {
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.edit-form__button--primary {
+  background: var(--selected-bg);
+  color: #ffffff;
+}
+
+.edit-form__button--secondary {
+  background: var(--section-background);
+  border: 1px solid var(--border-stroke);
+  color: var(--text-color);
+}

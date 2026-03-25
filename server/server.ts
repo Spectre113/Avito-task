@@ -99,6 +99,8 @@ fastify.get<ItemsGetRequest>('/items', (request) => {
           comparisonValue =
             new Date(item1.createdAt).valueOf() -
             new Date(item2.createdAt).valueOf();
+        } else if (sortColumn === 'price') {
+          comparisonValue = item1.price - item2.price;
         }
 
         return (sortDirection === 'desc' ? -1 : 1) * comparisonValue;

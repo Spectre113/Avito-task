@@ -1,0 +1,15 @@
+.ai-button {
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--revision-background);
+  color: var(--revision-color);
+  font-size: 12px;
+  cursor: pointer;
+  align-items: center;
+}
+
+.ai-button > span {
+  position: relative;
+  top: 1px;
+}

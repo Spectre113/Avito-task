@@ -6,8 +6,10 @@ export type Category = z.infer<typeof CategorySchema>;
 export const ItemSchema = z.object({
   id: z.number().int().positive(),
   category: CategorySchema,
-  title: z.string().min(1),
-  price: z.number().nonnegative(),
+  title: z.string().min(1, { message: 'Обязательное поле' }),
+  price: z.number({ message: 'Обязательное поле' }).nonnegative({
+    message: 'Цена не может быть меньше 0',
+  }),
   needsRevision: z.boolean(),
 });
 
@@ -55,27 +57,97 @@ export const ItemParamsSchema = z.union([
   }),
 ]);
 
-export const ItemDetailsSchema = z.object({
-  id: z.number().int().positive(),
-  category: CategorySchema,
-  title: z.string().min(1),
-  description: z.string(),
-  price: z.number().nonnegative(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-  params: ItemParamsSchema,
-  needsRevision: z.boolean(),
+export const AutoItemParamsSchema = z.object({
+  brand: z.string().optional(),
+  model: z.string().optional(),
+  yearOfManufacture: z.number().int().optional(),
+  transmission: z.enum(['automatic', 'manual']).optional(),
+  mileage: z.number().optional(),
+  enginePower: z.number().int().optional(),
 });
+
+export const RealEstateItemParamsSchema = z.object({
+  type: z.enum(['flat', 'house', 'room']).optional(),
+  address: z.string().optional(),
+  area: z.number().optional(),
+  floor: z.number().int().optional(),
+});
+
+export const ElectronicsItemParamsSchema = z.object({
+  type: z.enum(['phone', 'laptop', 'misc']).optional(),
+  brand: z.string().optional(),
+  model: z.string().optional(),
+  condition: z.enum(['new', 'used']).optional(),
+  color: z.string().optional(),
+});
+
+export const ItemDetailsSchema = z.discriminatedUnion('category', [
+  z.object({
+    id: z.number().int().positive(),
+    category: z.literal('auto'),
+    title: z.string().min(1),
+    description: z.string(),
+    price: z.number().nonnegative(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    params: AutoItemParamsSchema,
+    needsRevision: z.boolean(),
+  }),
+  z.object({
+    id: z.number().int().positive(),
+    category: z.literal('real_estate'),
+    title: z.string().min(1),
+    description: z.string(),
+    price: z.number().nonnegative(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    params: RealEstateItemParamsSchema,
+    needsRevision: z.boolean(),
+  }),
+  z.object({
+    id: z.number().int().positive(),
+    category: z.literal('electronics'),
+    title: z.string().min(1),
+    description: z.string(),
+    price: z.number().nonnegative(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    params: ElectronicsItemParamsSchema,
+    needsRevision: z.boolean(),
+  }),
+]);
 
 export type ItemDetails = z.infer<typeof ItemDetailsSchema>;
 
-export const ItemUpdateInputSchema = z.object({
-  category: CategorySchema,
-  title: z.string().min(1),
-  description: z.string().optional(),
-  price: z.number().nonnegative(),
-  params: ItemParamsSchema,
-});
+export const ItemUpdateInputSchema = z.discriminatedUnion('category', [
+  z.object({
+    category: z.literal('auto'),
+    title: z.string().min(1, { message: 'Обязательное поле' }),
+    description: z.string().optional(),
+    price: z
+      .number({ message: 'Обязательное поле' })
+      .nonnegative({ message: 'Цена не может быть меньше 0' }),
+    params: AutoItemParamsSchema,
+  }),
+  z.object({
+    category: z.literal('real_estate'),
+    title: z.string().min(1, { message: 'Обязательное поле' }),
+    description: z.string().optional(),
+    price: z
+      .number({ message: 'Обязательное поле' })
+      .nonnegative({ message: 'Цена не может быть меньше 0' }),
+    params: RealEstateItemParamsSchema,
+  }),
+  z.object({
+    category: z.literal('electronics'),
+    title: z.string().min(1, { message: 'Обязательное поле' }),
+    description: z.string().optional(),
+    price: z
+      .number({ message: 'Обязательное поле' })
+      .nonnegative({ message: 'Цена не может быть меньше 0' }),
+    params: ElectronicsItemParamsSchema,
+  }),
+]);
 
 export type ItemUpdateInput = z.infer<typeof ItemUpdateInputSchema>;
 
@@ -90,7 +162,7 @@ export type ItemUpdateInputResponse = z.infer<
 export function fetchItems(
   params?: ItemsQuery,
 ): Promise<z.infer<typeof ResponseSchema>> {
-  let baseUrl = 'http://localhost:8081/items';
+  let baseUrl = '/items';
   if (params) {
     const searchParams = new URLSearchParams();
     if (params.q) {
@@ -138,7 +210,7 @@ export function fetchItems(
 }
 
 export function fetchItemById(id: string): Promise<ItemDetails> {
-  return fetch(`http://localhost:8081/items/${id}`)
+  return fetch(`/items/${id}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error('Failed to fetch');
@@ -152,12 +224,25 @@ export function updateItem(
   id: string,
   data: ItemUpdateInput,
 ): Promise<ItemUpdateInputResponse> {
-  return fetch(`http://localhost:8081/items/${id}`, {
+  const cleanedData = {
+    ...data,
+    params: Object.fromEntries(
+      Object.entries(data.params ?? {}).flatMap(([key, value]) => {
+        if (value === '') return [];
+        if (typeof value === 'number' && Number.isNaN(value)) return [];
+        return [[key, value]];
+      }),
+    ),
+  };
+
+  const validatedData = ItemUpdateInputSchema.parse(cleanedData);
+
+  return fetch(`/items/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(validatedData),
   })
     .then((response) => {
       if (!response.ok) {
