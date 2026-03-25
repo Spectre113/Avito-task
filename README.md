@@ -84,6 +84,13 @@ npm install
 npm run dev
 ```
 
+### URL
+
+```bash
+Backend: http://localhost:8081
+Frontend: http://localhost:5173
+```
+
 ### Ollama
 
 ### Установка
