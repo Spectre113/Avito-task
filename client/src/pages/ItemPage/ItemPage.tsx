@@ -18,7 +18,7 @@ export const ItemPage = () => {
   const navigate = useNavigate();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['itemPageData', id],
+    queryKey: ['item', id],
     queryFn: () => {
       if (!id) {
         throw new Error('Item id is missing');

@@ -145,6 +145,7 @@ export const MainPage = () => {
         staleTime: 30_000,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     data,
     currentPage,
