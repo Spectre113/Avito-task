@@ -1,0 +1,36 @@
+.sort-select {
+  position: relative;
+  width: 98%;
+}
+
+.sort-select__control {
+  width: 100%;
+  padding: 6px 28px 5px 13px;
+  border-radius: 8px;
+  background-color: var(--section-background);
+  color: var(--text-color);
+  font-size: 14px;
+  appearance: none;
+  cursor: pointer;
+  border: none;
+}
+
+.sort-select__control:focus {
+  outline: none;
+}
+
+.sort-select__control:focus-visible {
+  outline: 1px solid var(--accent-color, --selected-bg);
+  outline-offset: 2px;
+}
+
+.sort-select__arrow {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transform: translateY(-50%) rotate(180deg);
+}

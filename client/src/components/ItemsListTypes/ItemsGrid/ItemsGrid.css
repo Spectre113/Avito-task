@@ -1,0 +1,16 @@
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+.items-grid__item {
+  width: 100%;
+  min-height: 268px;
+}
+
+@media (max-width: 1400px) {
+  .items-grid {
+    grid-template-columns: repeat(5, minmax(190px, 1fr));
+  }
+}

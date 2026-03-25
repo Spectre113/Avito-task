@@ -1,0 +1,80 @@
+import './Pagination.css';
+
+export interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}
+
+export const Pagination = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: PaginationProps) => {
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+  const goToPage = (page: number) => {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    onPageChange(page);
+  };
+
+  return (
+    <div className="flex pagination">
+      <button
+        className="btn-reset flex pagination__button"
+        onClick={() => goToPage(currentPage - 1)}
+        disabled={currentPage === 1}
+        aria-label="Предыдущая страница"
+      >
+        <span className="pagination__arrow pagination__arrow--left">
+          <svg
+            width="11"
+            height="7"
+            viewBox="0 0 11 7"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.106807 6.85715H1.11127C1.17957 6.85715 1.24386 6.82366 1.28404 6.76875L5.08895 1.52411L8.89386 6.76875C8.93404 6.82366 8.99833 6.85715 9.06663 6.85715H10.0711C10.1581 6.85715 10.209 6.75804 10.1581 6.68706L5.43583 0.17679C5.2644 -0.0589246 4.9135 -0.0589246 4.74341 0.17679L0.0210925 6.68706C-0.0311397 6.75804 0.0197535 6.85715 0.106807 6.85715V6.85715Z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+      </button>
+
+      {pages.map((page) => (
+        <button
+          key={page}
+          className={`btn-reset pagination__button ${
+            page === currentPage ? 'pagination__button--active' : ''
+          }`}
+          onClick={() => goToPage(page)}
+        >
+          {page}
+        </button>
+      ))}
+
+      <button
+        className="btn-reset pagination__button"
+        onClick={() => goToPage(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        aria-label="Следующая страница"
+      >
+        <span className="pagination__arrow pagination__arrow--right">
+          <svg
+            width="11"
+            height="7"
+            viewBox="0 0 11 7"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.106807 6.85715H1.11127C1.17957 6.85715 1.24386 6.82366 1.28404 6.76875L5.08895 1.52411L8.89386 6.76875C8.93404 6.82366 8.99833 6.85715 9.06663 6.85715H10.0711C10.1581 6.85715 10.209 6.75804 10.1581 6.68706L5.43583 0.17679C5.2644 -0.0589246 4.9135 -0.0589246 4.74341 0.17679L0.0210925 6.68706C-0.0311397 6.75804 0.0197535 6.85715 0.106807 6.85715V6.85715Z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+      </button>
+    </div>
+  );
+};

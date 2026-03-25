@@ -1,0 +1,34 @@
+.view-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  border-radius: 12px;
+  background-color: var(--toggle-background);
+}
+
+.view-toggle__button {
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 36px;
+  border-radius: 8px;
+  color: var(--text-color);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.view-toggle__divider {
+  width: 2px;
+  height: 27px;
+  background-color: var(--section-background);
+}
+
+.view-toggle__button--active > svg {
+  fill: var(--selected-bg);
+}
+
+.view-toggle__button--active > svg > path {
+  stroke: var(--selected-bg);
+}

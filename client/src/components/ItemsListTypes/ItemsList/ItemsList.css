@@ -1,0 +1,5 @@
+.items-list {
+  flex-direction: column;
+  gap: 16px;
+  justify-items: center;
+}
